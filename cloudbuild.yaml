@@ -3,16 +3,33 @@ steps:
   entrypoint: gsutil
   args:
   - cp
-  - config.${_ENV}.yaml
-  - gs://suzuito-${_ENV}-cloud-build-notifiers/config.${_ENV}.yaml
+  - config.info.${_ENV}.yaml
+  - gs://suzuito-${_ENV}-cloud-build-notifiers/config.info.${_ENV}.yaml
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gsutil
+  args:
+  - cp
+  - config.error.${_ENV}.yaml
+  - gs://suzuito-${_ENV}-cloud-build-notifiers/config.error.${_ENV}.yaml
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
   args:
   - run
   - deploy
-  - cloud-build-notifiers-slack
+  - cloud-build-notifiers-slack-info
   - --region=asia-northeast1
   - --image=us-east1-docker.pkg.dev/gcb-release/cloud-build-notifiers/slack:latest
   - --no-allow-unauthenticated
-  - --update-env-vars=CONFIG_PATH=gs://suzuito-${_ENV}-cloud-build-notifiers/config.minilla.yaml,PROJECT_ID=suzuito-${_ENV}
+  - --update-env-vars=CONFIG_PATH=gs://suzuito-${_ENV}-cloud-build-notifiers/config.info.minilla.yaml,PROJECT_ID=suzuito-${_ENV}
+  - --service-account=cloud-build-notifiers-app@suzuito-${_ENV}.iam.gserviceaccount.com
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - run
+  - deploy
+  - cloud-build-notifiers-slack-error
+  - --region=asia-northeast1
+  - --image=us-east1-docker.pkg.dev/gcb-release/cloud-build-notifiers/slack:latest
+  - --no-allow-unauthenticated
+  - --update-env-vars=CONFIG_PATH=gs://suzuito-${_ENV}-cloud-build-notifiers/config.error.minilla.yaml,PROJECT_ID=suzuito-${_ENV}
   - --service-account=cloud-build-notifiers-app@suzuito-${_ENV}.iam.gserviceaccount.com
