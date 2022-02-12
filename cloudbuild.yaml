@@ -20,7 +20,7 @@ steps:
   - --region=asia-northeast1
   - --image=us-east1-docker.pkg.dev/gcb-release/cloud-build-notifiers/slack:latest
   - --no-allow-unauthenticated
-  - --update-env-vars=CONFIG_PATH=gs://suzuito-${_ENV}-cloud-build-notifiers/config.info.minilla.yaml,PROJECT_ID=suzuito-${_ENV}
+  - --update-env-vars=CONFIG_PATH=gs://suzuito-${_ENV}-cloud-build-notifiers/config.info.${_ENV}.yaml,PROJECT_ID=suzuito-${_ENV}
   - --service-account=cloud-build-notifiers-app@suzuito-${_ENV}.iam.gserviceaccount.com
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
@@ -31,5 +31,5 @@ steps:
   - --region=asia-northeast1
   - --image=us-east1-docker.pkg.dev/gcb-release/cloud-build-notifiers/slack:latest
   - --no-allow-unauthenticated
-  - --update-env-vars=CONFIG_PATH=gs://suzuito-${_ENV}-cloud-build-notifiers/config.error.minilla.yaml,PROJECT_ID=suzuito-${_ENV}
+  - --update-env-vars=CONFIG_PATH=gs://suzuito-${_ENV}-cloud-build-notifiers/config.error.${_ENV}.yaml,PROJECT_ID=suzuito-${_ENV}
   - --service-account=cloud-build-notifiers-app@suzuito-${_ENV}.iam.gserviceaccount.com
